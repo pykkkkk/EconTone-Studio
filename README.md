@@ -23,6 +23,22 @@ A game-theoretic workbench for refining economics and management papers — insi
 
 ## Install
 
+In DSH:
+
+1. Open **Plugins** and click **Add plugin**.
+2. Type `econtone-studio` into **Package or address**.
+3. Click **Install**, then restart DSH when it asks.
+4. Open the workbench and bind it to a conversation.
+
+If the default registry is slow, switch **Install source** to the npm official or the mainland mirror.
+
+The engine also needs the EconTone skill pack (`econtone-score`, `econtone-polish`, `econtone-ai-trace`,
+`econtone-prosody`, `econtone-equilibrium`) under `~/.dsh/skills`, and Python 3.10+ available on `PATH`.
+Override the skills directory with the plugin's `engineRoot` config.
+
+<details>
+<summary>Install from source (offline / development)</summary>
+
 ```powershell
 git clone https://github.com/pykkkkk/EconTone-Studio.git
 ```
@@ -38,7 +54,7 @@ git clone https://github.com/pykkkkk/EconTone-Studio.git
 }
 ```
 
-Reload DSH. The engine reads skills from `~/.dsh/skills`; override with `engineRoot`.
+</details>
 
 ## Layout
 

@@ -22,6 +22,21 @@ English ｜ [简体中文](README.zh-CN.md)
 
 ## 安装
 
+在 DSH 里：
+
+1. 打开 **插件** 页，点 **添加插件**；
+2. 在 **包名或地址** 里填入 `econtone-studio`；
+3. 点 **安装**，按提示重启 DSH；
+4. 打开工作台，绑定工作对话。
+
+默认安装源慢的话，可在同一对话框里把 **安装源** 换成 npm 官方源或中国大陆镜像源。
+
+引擎还需要 `~/.dsh/skills` 下的 EconTone skill pack（`econtone-score`、`econtone-polish`、`econtone-ai-trace`、
+`econtone-prosody`、`econtone-equilibrium`），以及 `PATH` 里的 Python 3.10+；skill 目录可用插件的 `engineRoot` 覆盖。
+
+<details>
+<summary>从源码安装（离线 / 开发）</summary>
+
 ```powershell
 git clone https://github.com/pykkkkk/EconTone-Studio.git
 ```
@@ -37,7 +52,7 @@ git clone https://github.com/pykkkkk/EconTone-Studio.git
 }
 ```
 
-重新加载 DSH。引擎默认从 `~/.dsh/skills` 读取 skill，可用 `engineRoot` 覆盖。
+</details>
 
 ## 目录
 
