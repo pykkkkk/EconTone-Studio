@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://econtone.local/schemas/edit-unit.schema.json",
+  "title": "EconTone Studio data contract",
+  "description": "The three objects the Studio exchanges between the Python bridge, the Host plugin and the Client view. EditUnit is derived from (base, after); the engine itself does not emit spans.",
+  "type": "object",
+  "$defs": {
+    "Severity": {
+      "type": "string",
+      "enum": ["error", "warn", "info"],
+      "description": "error = hard constraint violated (terminology, meaning); warn = enhancement axis (rhythm, trace tier); info = evidence only (rejected move, band excursion)."
+    },
+    "Decision": {
+      "type": "string",
+      "enum": ["accepted", "rejected", "pending"],
+      "description": "accepted/rejected come from play.py's certificate; pending means no arbitration ran yet."
+    },
+    "Evidence": {
+      "type": "object",
+      "required": ["source", "code"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["terminology", "prosody", "trace", "register", "guard", "certificate", "derived"]
+        },
+        "code": {
+          "type": "string",
+          "description": "BANNED | MIXED | ACRONYM | SLURRY | POUNDING | ROBOTIC | DENSE | FLAT | TIER | TIER_UNKNOWN | BAND | ILLEGAL | ACCEPTED | REJECTED | COARSE",
+          "maxLength": 24
+        },
+        "term": { "type": "string", "maxLength": 120 },
+        "message": { "type": "string", "maxLength": 400 },
+        "value": { "type": ["number", "string", "null"] }
+      }
+    },
+    "Metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rhythm_delta": { "type": ["number", "null"] },
+        "risk_delta": { "type": ["number", "null"] },
+        "burstiness_delta": { "type": ["number", "null"] },
+        "terminology_delta": { "type": ["integer", "null"] },
+        "register_delta": { "type": ["integer", "null"] },
+        "composite_gain": { "type": ["number", "null"], "description": "play.py composite_gain()." }
+      }
+    },
+    "EditUnit": {
+      "type": "object",
+      "required": [
+        "id", "op", "base_range", "after_range", "original", "revised",
+        "player", "kind", "severity", "decision", "evidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^eu-[0-9]{4,}$" },
+        "op": {
+          "type": "string",
+          "enum": ["replace", "delete", "insert", "none"],
+          "description": "none = annotation only: a located finding with no rewritten text yet (original == revised, ranges equal). Used before any candidate exists."
+        },
+        "base_range": { "$ref": "#/$defs/Range" },
+        "after_range": { "$ref": "#/$defs/Range" },
+        "original": { "type": "string", "description": "base_text.slice(base_range.start, base_range.end)" },
+        "revised": { "type": "string", "description": "after_text.slice(after_range.start, after_range.end); equals original when op is none" },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "before": { "type": "string", "maxLength": 200 },
+            "after": { "type": "string", "maxLength": 200 }
+          }
+        },
+        "player": { "type": "string", "enum": ["polish", "trace", "prosody"] },
+        "kind": { "type": "string", "enum": ["wording", "boundary"] },
+        "severity": { "$ref": "#/$defs/Severity" },
+        "decision": { "$ref": "#/$defs/Decision" },
+        "reason": { "type": "string", "maxLength": 400, "description": "Verbatim from play.py or the scanner; never model-generated." },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/Evidence" }, "maxItems": 8 },
+        "metrics": { "$ref": "#/$defs/Metrics" },
+        "coarse": { "type": "boolean", "description": "True when alignment degraded to paragraph level; the UI must not claim character precision." },
+        "locate": { "type": "string", "enum": ["exact", "paragraph"], "description": "How the span was located." },
+        "stale": { "type": "boolean", "description": "base_sha256 does not match the current document; must not be applied." }
+      }
+    },
+    "Range": {
+      "type": "object",
+      "required": ["start", "end"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ScoreRow": {
+      "type": "object",
+      "required": ["id", "row", "owner", "score", "max", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "enum": ["P1", "P2", "T1", "R1"] },
+        "row": { "type": "string" },
+        "owner": { "type": "string" },
+        "score": { "type": ["integer", "null"] },
+        "max": { "type": "integer" },
+        "evidence": { "type": "string", "maxLength": 400 }
+      }
+    },
+    "RunRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "oneOf": [{ "required": ["path"] }, { "required": ["text"] }],
+      "properties": {
+        "path": { "type": "string" },
+        "text": { "type": "string", "maxLength": 400000 },
+        "profile": { "type": "string", "enum": ["body", "abstract", "intro"], "default": "body" },
+        "mode": { "type": "string", "enum": ["measure", "arbitrate"], "default": "measure" },
+        "rounds": { "type": "integer", "minimum": 1, "maximum": 8, "default": 3 }
+      }
+    },
+    "RunResult": {
+      "type": "object",
+      "required": ["runId", "createdAt", "profile", "mode", "document", "score", "findings", "edits"],
+      "additionalProperties": false,
+      "properties": {
+        "runId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "profile": { "type": "string", "enum": ["body", "abstract", "intro"] },
+        "mode": { "type": "string", "enum": ["measure", "arbitrate"] },
+        "document": {
+          "type": "object",
+          "required": ["path", "sha256", "chars"],
+          "additionalProperties": false,
+          "properties": {
+            "path": { "type": "string" },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "chars": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "engine": {
+          "type": "object",
+          "required": ["root", "fingerprint"],
+          "additionalProperties": false,
+          "properties": {
+            "root": { "type": "string" },
+            "fingerprint": { "type": "string", "description": "Hash of the five skills' scripts/*.py mtime+size." },
+            "missing": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "score": {
+          "type": "object",
+          "required": ["rows", "total", "editing_latitude", "band", "advice"],
+          "additionalProperties": false,
+          "properties": {
+            "rows": { "type": "array", "items": { "$ref": "#/$defs/ScoreRow" }, "minItems": 4, "maxItems": 4 },
+            "total": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "editing_latitude": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "band": { "type": "string", "enum": ["full", "reduced", "minimal", "corrections-only"] },
+            "advice": { "type": "string" }
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/EditUnit" },
+          "description": "Located problems from the scanners, before any rewrite exists. op is 'none', original == revised, decision is 'pending'."
+        },
+        "edits": { "type": "array", "items": { "$ref": "#/$defs/EditUnit" } },
+        "certificate": {
+          "type": ["object", "null"],
+          "description": "Verbatim play.py certificate: rounds[], chain[], final_metrics, game, mode, stopped_because."
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "timings": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      }
+    },
+    "ApiEnvelope": {
+      "type": "object",
+      "required": ["ok"],
+      "additionalProperties": false,
+      "properties": {
+        "ok": { "type": "boolean" },
+        "data": {},
+        "error": {
+          "type": "object",
+          "required": ["code", "message"],
+          "additionalProperties": false,
+          "properties": {
+            "code": { "type": "string" },
+            "message": { "type": "string" },
+            "detail": { "type": "string", "maxLength": 4000 }
+          }
+        }
+      }
+    }
+  },
+
+  "oneOf": [
+    { "$ref": "#/$defs/EditUnit" },
+    { "$ref": "#/$defs/RunResult" },
+    { "$ref": "#/$defs/RunRequest" }
+  ]
+}

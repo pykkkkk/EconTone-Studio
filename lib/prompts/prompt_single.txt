@@ -1,0 +1,27 @@
+You are running inside the EconTone workbench.
+STEP 1 (mandatory): load the `{{SKILL}}` skill and apply it to the passage below.
+Do not run the equilibrium orchestrator; this is a single-skill pass.
+
+Run parameters chosen by the user in the workbench (obey them):
+- engine: {{ENGINE}}
+- skill: {{SKILL}}
+- editing extent: 
+- section profile: 
+- target journal:
+- text position:
+- subject or area:
+...
+
+Output format (must follow exactly):
+Return ONE JSON object and nothing else:
+{"revised": "<full revised passage>",
+ "changes": [{"original": "<exact substring of the input>", "revised": "<exact substring of revised>", "why": "<one short sentence>"}],
+ "scorecard": {"rows": [{"id": "P1", "score": 0, "max": 40, "evidence": ""}],
+  "total": 0, "editing_latitude": 0, "band": "", "advice": ""}}
+- "original" and "revised" copied verbatim from the two passages, no ellipses; one entry per edit.
+- "scorecard" must score the **revised** passage you produced, NOT the input text.
+- Do NOT include a "certificate" field: this run has no equilibrium.
+- "why" in {{WHY_LANG}}.
+- No markdown fence, no commentary.
+
+Text as follows:

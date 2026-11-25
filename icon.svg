@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>EconTone</title>
+  <rect width="256" height="256" rx="57.6" fill="#F2EFE6"/>
+  <g transform="translate(17.02 17.02) scale(0.867)">
+    <path fill="#111111" d="M168 56 A74.29 74.29 0 0 1 168 200 A170 170 0 0 0 168 56 Z M88 200 A74.29 74.29 0 0 1 88 56 A170 170 0 0 0 88 200 Z"/>
+    <path fill="#111111" d="M80 128 A48 48 0 1 0 176 128 A48 48 0 1 0 80 128 Z"/>
+    <path fill="#E8B23A" d="M109.66 157.66 L157.66 109.66 L146.34 98.34 L98.34 146.34 Z"/>
+  </g>
+</svg>

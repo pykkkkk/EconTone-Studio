@@ -1,0 +1,52 @@
+{
+  "name": "econtone-studio",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "EconTone Studio - a game-theoretic workbench for refining economics and management papers in DeepSeek Harness.",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./lib/locale/*.json",
+    "./icon": "./lib/icon.svg"
+  },
+  "files": [
+    "lib/**",
+    "CHANGELOG.md",
+    "SECURITY.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./lib/cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "license": "MIT",
+  "author": "EconTone Studio contributors",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "economics",
+    "academic-writing",
+    "econtone"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pykkkkk/EconTone-Studio.git"
+  },
+  "homepage": "https://github.com/pykkkkk/EconTone-Studio#readme",
+  "bugs": {
+    "url": "https://github.com/pykkkkk/EconTone-Studio/issues"
+  },
+  "engines": {
+    "dsh": ">=0.2.1"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "python build/build_lib.py",
+    "test": "node --test tests/smoke.mjs"
+  }
+}

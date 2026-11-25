@@ -1,0 +1,35 @@
+You are running inside the EconTone workbench.
+STEP 1 (mandatory): load the `econtone-equilibrium` skill and follow its protocol.
+That skill orchestrates econtone-polish, econtone-ai-trace and econtone-prosody
+STEP 2: apply the equilibrium schedule to the passage, then report what changed.
+
+Run parameters chosen by the user in the workbench (obey them):
+- game model: 
+- game order: 
+- cooperation:
+- coalition: 
+- editing extent: 
+- action mode: 
+- time budget: 
+- section profile: 
+- target journal:
+- text position:
+- subject or area:
+...
+
+Output format (must follow exactly):
+Return ONE JSON object and nothing else:
+{"revised": "<full rewritten passage>",
+ "changes": [{"original": "<exact substring of the input>", "revised": "<exact substring of revised>", "why": "<one short sentence>"}],
+ "scorecard": {"rows": [{"id": "P1", "score": 0, "max": 40, "evidence": ""}],
+  "total": 0, "editing_latitude": 0, "band": "", "advice": ""},
+ "certificate": {"game": {"model": "<game form or skill schedule>", "cooperation": "none|maxsum|nash", "iteration_cost": 0},
+  "rounds": [{"round": 1, "accepted": "<what was accepted>", "moves": []}],
+  "stopped_because": "<why the run stopped>"}}
+- "original" and "revised" copied verbatim from the two passages, no ellipses; one entry per edit.
+- "scorecard" must score the **revised** passage you produced (after all edits), NOT the input text.
+  If you changed nothing, the scorecard should equal the input score.
+- "why" in {{WHY_LANG}}.
+- No markdown fence, no commentary.
+
+Text as follows：
