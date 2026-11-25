@@ -8,12 +8,13 @@
 
 English ｜ [简体中文](README.zh-CN.md)
 
-把 [EconTone](https://github.com/pykkkkk/EconTone) 的测量与裁决能力做成 DeepSeek Harness 里的一个工作台：
-评分、精修、读均衡证书。
+一个基于博弈思想的经管论文精修工作台，运行在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 里。
 
 ![评分卡](docs/screenshots/01-score.jpg)
 
 ![润色稿与词级差异](docs/screenshots/02-rewrite.jpg)
+
+![逐条对比](docs/screenshots/05-compare.jpg)
 
 ![均衡证书](docs/screenshots/03-certificate.jpg)
 

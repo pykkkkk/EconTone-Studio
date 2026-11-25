@@ -2,7 +2,7 @@
   "name": "econtone-studio",
   "version": "1.0.0",
   "type": "module",
-  "description": "EconTone Studio - a game-theoretic workbench for refining economics and management papers in DeepSeek Harness.",
+  "description": "A game-theoretic workbench for refining economics and management papers.",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",

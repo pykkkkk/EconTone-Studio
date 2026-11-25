@@ -8,12 +8,14 @@
 
 [简体中文](README.zh-CN.md) ｜ English
 
-A DeepSeek Harness panel that turns the [EconTone](https://github.com/pykkkkk/EconTone) measurement skills into a
-workbench: score, polish, and read the equilibrium certificate.
+A game-theoretic workbench for refining economics and management papers — inside
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
 
 ![Scorecard](docs/screenshots/01-score.jpg)
 
 ![Rewrite with word-level diffs](docs/screenshots/02-rewrite.jpg)
+
+![Item by item comparison](docs/screenshots/05-compare.jpg)
 
 ![Equilibrium certificate](docs/screenshots/03-certificate.jpg)
 
